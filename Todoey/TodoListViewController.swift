@@ -10,7 +10,7 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
     
-    let itemsArray = ["Find Mike","Buy eggs","Destroy"]
+    var itemsArray = ["Find Mike","Buy eggs","Destroy"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,20 +34,53 @@ class TodoListViewController: UITableViewController {
     
     //MARK - TableView Delegate Methods
     
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        print(itemsArray[indexPath.row])
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        print(itemsArray[indexPath.row])
         
-        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark{
+        
+        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
             tableView.cellForRow(at: indexPath)?.accessoryType = .none
         }
-        else{
+        else {
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    //MARK - Add New Items
+    
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+         var textField = UITextField()
+        
+         let alert = UIAlertController(title:"Add New Todo Item", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add item", style: .default) { (action) in
+            
+            print(textField.text!)
+            self.itemsArray.append(textField.text!)
+            
+            self.tableView.reloadData()
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create New Item"
+            textField = alertTextField
+            
+        }
+            
+            alert.addAction(action)
+            
+            self.present(alert, animated: true, completion: nil)
+            
+        
+                
+            }
+            
+        }
+
+    
 
 
-}
 
